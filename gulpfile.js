@@ -10,7 +10,6 @@ var gulp = require('gulp'),
     buffer = require('vinyl-buffer'),
     uglify = require('gulp-uglify'),
     gutil = require('gulp-util'),
-    bower = require('gulp-bower'),
     command = require('gulp-command')(gulp),
     ngAnnotate = require('browserify-ngannotate');
 
@@ -35,10 +34,10 @@ gulp.task('clean', function (cb) {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('bower', function() {
-    return bower('./bower_components')
-        .pipe(gulp.dest('./dist/lib'));
-});
+//gulp.task('bower', function() {
+//    return bower('./bower_components')
+//        .pipe(gulp.dest('./dist/lib'));
+//});
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -138,7 +137,7 @@ gulp.task('build-js', ['clean'], function() {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('build', [ 'clean','bower','build-css','build-template-cache', 'jshint', 'build-js'], function() {
+gulp.task('build', [ 'clean','build-css','build-template-cache', 'jshint', 'build-js'], function() {
     return gulp.src('index.html')
         .pipe(cachebust.references())
         .pipe(gulp.dest('dist'));
