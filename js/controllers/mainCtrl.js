@@ -2,11 +2,25 @@ var angular = require('angular');
 angular.module('app')
 	.controller('MainCtrl', function TodoCtrl($scope, $http, key) {
 		'use strict';
-		
+
 		var facetsUrl = 'https://api.solvebio.com/v1/dataset_fields/3176/facets?limit=100&access_token='+key;
 		function getFacets() {
 			$http.get(facetsUrl).success(function(data) {
-				$scope.chromosomeList = data['facets'];
+				function isInteger(x) {
+					return x % 1 === 0;
+				}
+				var numList = [], strList = [];
+				data['facets'].forEach(function(d) {
+					if(isInteger(d[0])) {
+						d[0] = parseInt(d[0]);
+						numList.push(d[0]);
+					} else {
+						strList.push(d[0]);
+					}
+				});
+				numList.sort(function(a, b){return a-b});
+				strList.sort();
+				$scope.chromosomeList = numList.concat(strList);
 			});
 		}
 
@@ -36,7 +50,7 @@ angular.module('app')
 		$scope.$watch( "selected.chromosome",
 			function ( newVal ) {
 				if(newVal != undefined) {
-					getBands(newVal[0]);
+					getBands(newVal);
 				}
 			}
 		);

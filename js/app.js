@@ -19,10 +19,9 @@ angular.module('app', ['ngRoute','appPartials'])
                 controller: 'MainCtrl',
                 templateUrl: '/partials/app-index.html',
                 resolve: {
-                    key: function($http, $route){
+                    key: function($http){
                         return $http.get('/config/api-key.txt')
                             .then(function(response){
-                                console.log(response);
                                 return response.data;
                             })
                     }

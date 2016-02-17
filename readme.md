@@ -1,4 +1,5 @@
 #Genomic Ideogram
+
 =================
 
 This repository is a single page example app that displays an ideogram - a schematic representation of a chromosome.
@@ -11,6 +12,7 @@ This repository is a single page example app that displays an ideogram - a schem
 
 
 #About Ideograms
+
 =================
 
 Ideograms are schematic representations of chromosomes. They show the relative size of the chromosomes and their banding patterns. A
