@@ -154,10 +154,11 @@ angular.module('app')
                             fill:function(d) { return colorScale(d.density); }
                         })
                         .on("mouseover", function(d,i) {
-                            d3.select("#tooltip")
-                                .style("left", xScale(d.genomic_coordinates.stop - d.genomic_coordinates.start/2) + "px")
-                                .style("top", yScale(50) + "px")
-                                .select("#label")
+                            d3.select('text')
+                                .attr({
+                                    x: xScale(d.genomic_coordinates.stop - (d.genomic_coordinates.stop - d.genomic_coordinates.start)/2),
+                                    y:yScale(60)
+                                })
                                 .text(d.band_label);
                             d3.select("#tooltip").classed("show", true);
                         })
@@ -168,6 +169,6 @@ angular.module('app')
                 }
 
             },
-            template: "<svg width='1000' height='200'><div id='tooltip'><span id='label'></span></div></svg>"
+            template: "<svg width='1000' height='200'><text id='tooltip'></text></svg>"
         }
     });

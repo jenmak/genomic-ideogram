@@ -31,7 +31,6 @@ form {
     font-size:1.3em;
     background: white;
     border: none;
-    //background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;
     height: 40px;
     border: 1px solid #ccc;
     width: 80px;
@@ -51,19 +50,22 @@ form {
       transition: all 0.3s;
       stroke: #ccc;
       &:hover {
-        stroke:orange;
+        fill-opacity: .5;
+        stroke:white;
       }
     }
   }
 }
+text {
+  text-anchor:middle;
 
+}
 #tooltip {
   position: absolute;
   //width: 90px;
   //height: auto;
   background:#ccc;
-  //padding: 10px;
-  //background-color: white;
+  font-size:1.3em;
   display:none;
   pointer-events: none;
   &.show {
