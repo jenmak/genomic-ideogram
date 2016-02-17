@@ -3,15 +3,15 @@ var gulp = require('gulp'),
     webserver = require('gulp-webserver'),
     del = require('del'),
     sass = require('gulp-sass'),
-    karma = require('gulp-karma'),
     jshint = require('gulp-jshint'),
     sourcemaps = require('gulp-sourcemaps'),
-    spritesmith = require('gulp.spritesmith'),
     browserify = require('browserify'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
     uglify = require('gulp-uglify'),
     gutil = require('gulp-util'),
+    bower = require('gulp-bower'),
+    command = require('gulp-command')(gulp),
     ngAnnotate = require('browserify-ngannotate');
 
 var CacheBuster = require('gulp-cachebust');
@@ -36,12 +36,27 @@ gulp.task('clean', function (cb) {
 /////////////////////////////////////////////////////////////////////////////////////
 
 gulp.task('bower', function() {
-
-    var install = require("gulp-install");
-
-    return gulp.src(['./bower.json'])
-        .pipe(install());
+    return bower('./bower_components')
+        .pipe(gulp.dest('./dist/lib'));
 });
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// create api-key.json file from input
+//
+/////////////////////////////////////////////////////////////////////////////////////
+
+gulp.option('config', '-k, --apikey', 'API Key');
+gulp.task('config', function(){
+        var stream = source('api-key.txt');
+        stream.write(this.flags.apikey.toString());
+        process.nextTick(function() {
+            stream.end();
+        });
+        stream
+            .pipe(buffer())
+            .pipe(gulp.dest('./config'));
+    });
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -72,7 +87,7 @@ gulp.task('build-template-cache', ['clean'], function() {
     
     return gulp.src("./partials/*.html")
         .pipe(ngHtml2Js({
-            moduleName: "todoPartials",
+            moduleName: "appPartials",
             prefix: "/partials/"
         }))
         .pipe(concat("templateCachePartials.js"))
@@ -93,27 +108,6 @@ gulp.task('jshint', function() {
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// runs karma tests
-//
-/////////////////////////////////////////////////////////////////////////////////////
-
-gulp.task('test', ['build-js'], function() {
-    var testFiles = [
-        './test/unit/*.js'
-    ];
-
-    return gulp.src(testFiles)
-        .pipe(karma({
-            configFile: 'karma.conf.js',
-            action: 'run'
-        }))
-        .on('error', function(err) {
-            console.log('karma tests failed: ' + err);
-            throw err;
-        });
-});
-/////////////////////////////////////////////////////////////////////////////////////
-//
 // Build a minified Javascript bundle - the order of the js files is determined
 // by browserify
 //
@@ -123,7 +117,7 @@ gulp.task('build-js', ['clean'], function() {
     var b = browserify({
         entries: './js/app.js',
         debug: true,
-        paths: ['./js/controllers', './js/services', './js/directives'],
+        paths: ['./js/lib','./js/controllers', './js/services', './js/directives'],
         transform: [ngAnnotate]
     });
 
@@ -140,11 +134,11 @@ gulp.task('build-js', ['clean'], function() {
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// full build (except sprites), applies cache busting to the main page css and js bundles
+// full build, applies cache busting to the main page css and js bundles
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('build', [ 'clean', 'bower','build-css','build-template-cache', 'jshint', 'build-js'], function() {
+gulp.task('build', [ 'clean','bower','build-css','build-template-cache', 'jshint', 'build-js'], function() {
     return gulp.src('index.html')
         .pipe(cachebust.references())
         .pipe(gulp.dest('dist'));
@@ -185,29 +179,8 @@ gulp.task('dev', ['watch', 'webserver']);
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// generates a sprite png and the corresponding sass sprite map.
-// This is not included in the recurring development build and needs to be run separately
+// installs and builds everything
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('sprite', function () {
-
-    var spriteData = gulp.src('./images/*.png')
-        .pipe(spritesmith({
-            imgName: 'todo-sprite.png',
-            cssName: '_todo-sprite.scss',
-            algorithm: 'top-down',
-            padding: 5
-        }));
-
-    spriteData.css.pipe(gulp.dest('./dist'));
-    spriteData.img.pipe(gulp.dest('./dist'))
-});
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-// installs and builds everything, including sprites
-//
-/////////////////////////////////////////////////////////////////////////////////////
-
-gulp.task('default', ['sprite','build', 'test']);
+gulp.task('default', ['build']);

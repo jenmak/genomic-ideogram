@@ -1,0 +1,12 @@
+<div>
+    <h1>Chromosome Ideogram</h1>
+    <form name="chromosomes">
+        <label for="chromSelect">Choose a chromosome</label>
+        <select name="mySelect" id="chromSelect"
+                ng-options="c[0] for c in chromosomeList | orderBy:c[0]"
+                ng-model="selected.chromosome"></select>
+    </form>
+    <div class="ideogram-container" ng-if="selected.bands">
+        <ideogram bands-data="selected.bands"></ideogram>
+    </div>
+</div>

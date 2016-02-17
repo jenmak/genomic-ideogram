@@ -1,0 +1,23 @@
+@mixin flex-box($direction,$justify,$align,$wrap:"") {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: $align;
+  -moz-box-align: $align;
+  -webkit-align-items: $align;
+  -ms-flex-align: $align;
+  align-items: $align;
+  -webkit-flex-direction: $direction;
+  flex-direction: $direction;
+  -webkit-justify-content: $justify;
+  justify-content: $justify;
+  @if $wrap != '' {
+    flex-wrap: $wrap;
+    -webkit-flex-wrap: $wrap;
+  } @else {
+    flex-wrap:wrap;
+    -webkit-flex-wrap:wrap;
+  }
+}
