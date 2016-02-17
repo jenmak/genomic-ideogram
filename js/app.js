@@ -1,11 +1,3 @@
-/*global angular */
-
-/**
- * The main TodoMVC app module
- *
- * @type {angular.Module}
- */
-
 var angular = require('angular');
 require('angular-route');
 require('../dist/templateCachePartials');

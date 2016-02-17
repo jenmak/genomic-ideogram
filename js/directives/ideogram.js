@@ -9,7 +9,7 @@ angular.module('app')
             scope: {
                 bandsData: '='
             },
-            link: function (scope, elem, attr) {
+            link: function (scope, elem) {
                 var xScale, yScale,colorScale, min,max,centr;
                 var d3 = $window.d3,
                     svg = d3.select(elem.find('svg')[0]),
@@ -44,6 +44,8 @@ angular.module('app')
                         .domain([0, 100])
                         .range(['white','purple']);
                 }
+
+                // Path Shapes
 
                 function isLeftRoundedRect(d) {
                     if(d.genomic_coordinates.start == min || d.genomic_coordinates.start == centr)
@@ -85,6 +87,8 @@ angular.module('app')
                         + "z";
                 }
 
+                // Attaches viewbox to svg to retain original aspect ratio.
+
                 function responsify() {
                     var aspect = width / height;
 
@@ -111,6 +115,7 @@ angular.module('app')
                     drawChart();
                     resizeSVG($window.innerWidth);
                 }
+
                 // Resize svg when window resizes.
 
                 angular.element($window).bind('resize', function() {

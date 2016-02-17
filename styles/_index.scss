@@ -8,10 +8,7 @@ body {
   font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 1.4em;
   background: #f5f5f5;
-  margin: 0 auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-font-smoothing: antialiased;
-  font-smoothing: antialiased;
+  @include font-smooth(antialiased);
   font-weight: 300;
   text-align: center;
 }
@@ -30,7 +27,6 @@ form {
   select {
     font-size:1.3em;
     background: white;
-    border: none;
     height: 40px;
     border: 1px solid #ccc;
     width: 80px;
@@ -44,10 +40,7 @@ form {
   @include flex-box(column,center,center);
   svg {
     path {
-      -moz-transition: all 0.3s;
-      -webkit-transition: all 0.3s;
-      -o-transition: all 0.3s;
-      transition: all 0.3s;
+      @include transition(all 0.3);
       stroke: #ccc;
       &:hover {
         fill-opacity: .5;
@@ -56,19 +49,17 @@ form {
     }
   }
 }
+
 text {
   text-anchor:middle;
-
-}
-#tooltip {
-  position: absolute;
-  //width: 90px;
-  //height: auto;
-  background:#ccc;
-  font-size:1.3em;
-  display:none;
-  pointer-events: none;
-  &.show {
-    display: block;
+  &#tooltip {
+    position: absolute;
+    background:#ccc;
+    font-size:1.3em;
+    display:none;
+    pointer-events: none;
+    &.show {
+      display: block;
+    }
   }
 }

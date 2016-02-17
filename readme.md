@@ -2,6 +2,7 @@
 
 =================
 
+
 This repository is a single page example app that displays an ideogram - a schematic representation of a chromosome.
 
 * Built with AngularJS
@@ -13,7 +14,6 @@ This repository is a single page example app that displays an ideogram - a schem
 
 #About Ideograms
 
-=================
 
 Ideograms are schematic representations of chromosomes. They show the relative size of the chromosomes and their banding patterns. A
 banding pattern appears when a tightly coiled chromosome is stained with specific chemical solutions and then viewed under a microscope. The
@@ -22,6 +22,7 @@ More about ideograms: http://www.ncbi.nlm.nih.gov/genome/tools/gdp/
 
 
 # Installation instructions
+
 
 First make sure Gulp is globally installed, by running:
 
